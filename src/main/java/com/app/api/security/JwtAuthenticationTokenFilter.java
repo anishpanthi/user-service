@@ -3,7 +3,7 @@ package com.app.api.security;
 import com.app.api.annotation.EnableEscapeForCGLibProxy;
 import com.app.api.security.dto.JwtAuthenticationToken;
 import com.app.api.security.exception.JwtTokenMissingException;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * @author Anish Panthi
  */
-@Slf4j
+@Log4j2
 @EnableEscapeForCGLibProxy
 public class JwtAuthenticationTokenFilter extends AbstractAuthenticationProcessingFilter {
 
@@ -31,7 +31,7 @@ public class JwtAuthenticationTokenFilter extends AbstractAuthenticationProcessi
     private String tokenHeader;
 
     private static final List<RequestMatcher> PATHS = Arrays.asList(
-            new AntPathRequestMatcher("/v1/users/**")
+            new AntPathRequestMatcher("/v1/**")
     );
 
     public JwtAuthenticationTokenFilter() {

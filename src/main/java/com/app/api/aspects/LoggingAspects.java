@@ -1,6 +1,6 @@
 package com.app.api.aspects;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
@@ -12,13 +12,14 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Aspect
-@Slf4j
+@Log4j2
 public class LoggingAspects {
 
     @Pointcut("within(com.app.api..*)"
             + "&& !@annotation(com.app.api.annotation.EnableEscapeForCGLibProxy)"
             + "&& !@target(com.app.api.annotation.EnableEscapeForCGLibProxy)")
-    public void logExceptionForAllMethods() {}
+    public void logExceptionForAllMethods() {
+    }
 
     @AfterThrowing(pointcut = "logExceptionForAllMethods()", throwing = "exception")
     public void afterThrowingException(JoinPoint joinPoint, Exception exception) {

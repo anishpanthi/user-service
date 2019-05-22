@@ -18,7 +18,6 @@ public class JwtTokenGenerator {
     public static String generateToken(JwtUserDto u, String secret) {
         final Date expirationDate = new Date(System.currentTimeMillis() + (2 * 24 * 60 * 60 * 1000));
 
-
         //The JWT signature algorithm we will be using to sign the token
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 

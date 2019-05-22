@@ -10,7 +10,7 @@ import com.app.api.security.dto.JwtUserDto;
 import com.app.api.security.util.JwtTokenGenerator;
 import com.app.api.service.UserService;
 import io.swagger.annotations.Api;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,7 +33,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
  * @author Anish Panthi
  */
 @RestController
-@Slf4j
+@Log4j2
 @Api(value = "Authentication Controller", tags = "Operations pertaining to User's authentication.")
 public class AuthenticationController {
 

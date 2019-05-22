@@ -11,7 +11,7 @@ import com.app.api.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -29,7 +29,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
  * @author Anish Panthi
  */
 @RestController
-@Slf4j
+@Log4j2
 @RequestMapping("/v1")
 @Api(value = "User Controller", tags = "Operations pertaining to Users.")
 public class UserController {
