@@ -32,8 +32,10 @@ public class ApiRequestResponseInterceptor extends HandlerInterceptorAdapter {
                                 Exception ex) throws Exception {
         long startTime = (Long) request.getAttribute("startTime");
         long endTime = System.currentTimeMillis();
+        log.info("================================================================================================");
         log.info("Request Started Time :: " + new Date(startTime));
         log.info("Request Ended Time :: " + new Date(endTime));
-        log.info("Request Completed Time :: " + (System.currentTimeMillis() - startTime));
+        log.info("Request Completed Time :: " + (System.currentTimeMillis() - startTime) + " millis");
+        log.info("================================================================================================");
     }
 }
