@@ -12,5 +12,5 @@ public interface UserService extends BaseService<User, UserDto, Long> {
 
     User findByUsernameAndPassword(String username, String password);
 
-    Page<UserDto> findAllByPage(Pageable pageable);
+    Page<User> findAll(Pageable pageable);
 }

@@ -1,5 +1,6 @@
 package com.app.api.controller;
 
+import com.app.api.annotation.PageableEndpoint;
 import com.app.api.domain.User;
 import com.app.api.dto.UserDto;
 import com.app.api.dto.UserResponse;
@@ -12,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +45,6 @@ public class UserController {
     @GetMapping(value = "/users/username/{username}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> getUserByUsername(@PathVariable("username") String username,
                                                @RequestHeader("Authorization") final String authorization) {
-        log.debug("Token:: {}", authorization);
         Optional<User> userOptional = userService.findByUsername(username);
         return userOptional.map(user -> {
             final UserResponse userResponse = new UserResponse(Collections.singletonList(UserMapper.mapToDto(user)));
@@ -52,24 +53,16 @@ public class UserController {
         }).orElseThrow(() -> new NotFoundException("User Not Found!!!"));
     }
 
+    @PageableEndpoint
     @GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<?> getAllUsers(@RequestHeader("Authorization") final String authorization) throws ApiException {
-        log.debug("Token:: {}", authorization);
-        return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
+    public ResponseEntity<?> getAllUsers(@RequestHeader("Authorization") final String authorization, Pageable pageable) throws ApiException {
+        return new ResponseEntity<>(userService.findAll(pageable), HttpStatus.OK);
     }
-
-//    @PageableEndpoint
-//    @GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    public ResponseEntity<?> getAllUsersByPage(@RequestHeader("Authorization") final String authorization, Pageable pageable) throws ApiException {
-//        log.debug("Token:: {}", authorization);
-//        return new ResponseEntity<>(userService.findAllByPage(pageable), HttpStatus.OK);
-//    }
 
     @ApiOperation(value = "Returns User if ID is found.")
     @GetMapping(value = "/users/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> getSingleUser(@RequestHeader("Authorization") final String authorization,
                                            @ApiParam(value = "User ID", required = true) @PathVariable("id") Long id) throws ApiException {
-        log.debug("Token:: {}", authorization);
         return new ResponseEntity<>(userService.findOne(id), HttpStatus.OK);
     }
 
@@ -77,7 +70,6 @@ public class UserController {
     @PostMapping(value = "/users", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> addUser(@RequestHeader("Authorization") final String authorization,
                                      @ApiParam(value = "User details to add", required = true) @RequestBody UserDto userDto) throws ApiException {
-        log.debug("Token:: {}", authorization);
         return new ResponseEntity<>(userService.save(userDto), HttpStatus.CREATED);
     }
 
@@ -85,7 +77,6 @@ public class UserController {
     @PutMapping(value = "/users", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> updateUser(@RequestHeader("Authorization") final String authorization,
                                         @ApiParam(value = "User details to update", required = true) @RequestBody UserDto userDto) throws ApiException {
-        log.debug("Token:: {}", authorization);
         return new ResponseEntity<>(userService.update(userDto), HttpStatus.OK);
     }
 
@@ -93,7 +84,6 @@ public class UserController {
     @DeleteMapping(value = "/users", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> deleteUser(@RequestHeader("Authorization") final String authorization,
                                         @ApiParam(value = "User details to delete", required = true) @RequestBody UserDto userDto) throws ApiException {
-        log.debug("Token:: {}", authorization);
         return new ResponseEntity<>(userService.delete(userDto), HttpStatus.OK);
     }
 

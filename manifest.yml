@@ -1,10 +1,10 @@
 ---
 applications:
-  - name: user-service
+  - name: userservices
     memory: 1G
-    instances: 1
+    instances: 2
     random-route: false
-    host: user-service
+    host: userservices
     buildpack: https://github.com/cloudfoundry/java-buildpack.git
     path: ./build/libs/user-service-1.0.jar
     services:

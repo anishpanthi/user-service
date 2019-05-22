@@ -1,5 +1,6 @@
 package com.app.api.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,15 +29,16 @@ public class User implements Serializable {
     @Column(name = "LAST_NAME")
     private String lastName;
 
-    @Column(name = "EMAIL", unique = true)
+    @Column(name = "EMAIL")
     private String email;
 
     @Column(name = "CONTACT")
     private String contact;
 
-    @Column(name = "USERNAME", unique = true)
+    @Column(name = "USERNAME")
     private String username;
 
+    @JsonIgnore
     @Column(name = "PASSWORD")
     private String password;
 }

@@ -8,7 +8,7 @@ import com.app.api.exception.NotFoundException;
 import com.app.api.repository.UserRepository;
 import com.app.api.service.UserService;
 import com.app.api.util.Constants;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,7 +23,7 @@ import java.util.Optional;
  * @author Anish Panthi
  */
 @Service
-@Slf4j
+@Log4j2
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
@@ -49,6 +49,20 @@ public class UserServiceImpl implements UserService {
                 }
         );
         return userDtoList;
+    }
+
+    @Override
+    public Page<User> findAll(Pageable pageable) {
+        Page<User> userPage;
+        try{
+            log.info("{}", pageable);
+            userPage = userRepository.findAll(pageable);
+            log.info("userPage:: {}", userPage.toString());
+        }catch(Exception e){
+            log.error("", e);
+            throw new ApiException(e.getMessage());
+        }
+        return userPage;
     }
 
     @Override
@@ -132,11 +146,6 @@ public class UserServiceImpl implements UserService {
             throw new ApiException(e.getMessage());
         }
         return userInDb;
-    }
-
-    @Override
-    public Page<UserDto> findAllByPage(Pageable pageable) {
-        return null;
     }
 
     private Object saveOrUpdate(UserDto userDto, String operation) throws ApiException {
