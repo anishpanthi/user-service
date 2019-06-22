@@ -13,6 +13,7 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    all*.exclude module: 'spring-boot-starter-logging'
 }
 
 repositories {
@@ -32,6 +33,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-hateoas'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
     implementation 'de.codecentric:spring-boot-admin-starter-client'
     implementation 'io.pivotal.spring.cloud:spring-cloud-services-starter-service-registry'
     compileOnly 'org.projectlombok:lombok'

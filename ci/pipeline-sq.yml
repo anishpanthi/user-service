@@ -1,0 +1,101 @@
+resource_types:
+  - name: git
+    type: docker-image
+    source:
+      repository: concourse/git-resource
+      tag: latest
+
+  - name: sonar-runner
+    type: docker-image
+    source:
+      repository: cathive/concourse-sonarqube-resource
+      tag: latest
+
+resources:
+  - name: user-service-git
+    type: git
+    source:
+      uri: {{GIT_REPO}}
+      branch: Development
+
+  - name: deploy-user-service
+    type: cf
+    source:
+      api: {{PCF_API}}
+      username: {{PCF_USER}}
+      password: {{PCF_PASS}}
+      organization: {{PCF_ORG}}
+      space: {{PCF_SPACE}}
+      skip_cert_check: true
+
+  - name: code-analysis
+    type: sonar-runner
+    source:
+      host_url: {{SQ_HOST_URL}}
+      login: {{SQ_KEY}}
+      project_key: {{SQ_PROJECT_KEY}}
+
+jobs:
+  - name: unit-tests
+    plan:
+      - get: user-service-git
+        trigger: true
+      - task: unit
+        file: user-service-git/ci/tasks/unit-test.yml
+
+  - name: build-and-analysis
+    plan:
+      - get: user-service-git
+        trigger: true
+      - task: build
+        file: user-service-git/ci/tasks/build-artifact.yml
+      - aggregate:
+          - put: code-analysis
+            params:
+              project_path: sonarqube-analysis-input
+              additional_properties:
+                sonar.javascript.lcov.reportPaths: coverage/lcov.info
+                sonar.projectKey: {{SC_PROJECT_KEY}}
+                sonar.java.source: 1.8
+                sonar.java.binaries: build/classes
+
+  - name: qualitygate
+    plan:
+      - aggregate:
+          - get: user-service-git
+            passed:
+              - build-and-analysis
+          - get: code-analysis
+            passed:
+              - build-and-analysis
+            trigger: true
+      - task: check-sonarqube-quality-gate
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: cathive/concourse-sonarqube-qualitygate-task
+              tag: latest
+          inputs:
+            - name: code-analysis
+          run:
+            path: /sonarqube-qualitygate-check
+            dir: code-analysis
+
+  - name: build-artifact
+    serial: true
+    plan:
+      - get: user-service-git
+        passed: [unit-tests]
+        trigger: true
+      - task: build-artifact
+        file: user-service-git/ci/tasks/build-artifact.yml
+        timeout: 5m
+        params:
+          base_name: user-service-1.0
+      - put: deploy-user-service
+        params:
+          manifest: user-service-git/manifest.yml
+          current_app_name: verification
+          path: artifact-dir/user-service-1.0.jar
