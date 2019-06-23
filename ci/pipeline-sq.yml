@@ -16,17 +16,17 @@ resources:
     type: git
     source:
       uri: {{GIT_REPO}}
-      branch: Development
+      branch: master
 
-  - name: deploy-user-service
-    type: cf
-    source:
-      api: {{PCF_API}}
-      username: {{PCF_USER}}
-      password: {{PCF_PASS}}
-      organization: {{PCF_ORG}}
-      space: {{PCF_SPACE}}
-      skip_cert_check: true
+#  - name: deploy-user-service
+#    type: cf
+#    source:
+#      api: {{PCF_API}}
+#      username: {{PCF_USER}}
+#      password: {{PCF_PASS}}
+#      organization: {{PCF_ORG}}
+#      space: {{PCF_SPACE}}
+#      skip_cert_check: true
 
   - name: code-analysis
     type: sonar-runner
@@ -55,7 +55,7 @@ jobs:
               project_path: sonarqube-analysis-input
               additional_properties:
                 sonar.javascript.lcov.reportPaths: coverage/lcov.info
-                sonar.projectKey: {{SC_PROJECT_KEY}}
+                sonar.projectKey: {{SQ_PROJECT_KEY}}
                 sonar.java.source: 1.8
                 sonar.java.binaries: build/classes
 
@@ -87,15 +87,15 @@ jobs:
     serial: true
     plan:
       - get: user-service-git
-        passed: [unit-tests]
+        passed: [qualitygate]
         trigger: true
       - task: build-artifact
         file: user-service-git/ci/tasks/build-artifact.yml
         timeout: 5m
         params:
           base_name: user-service-1.0
-      - put: deploy-user-service
-        params:
-          manifest: user-service-git/manifest.yml
-          current_app_name: verification
-          path: artifact-dir/user-service-1.0.jar
+#      - put: deploy-user-service
+#        params:
+#          manifest: user-service-git/manifest.yml
+#          current_app_name: verification
+#          path: artifact-dir/user-service-1.0.jar
