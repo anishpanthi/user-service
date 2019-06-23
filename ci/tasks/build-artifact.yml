@@ -12,6 +12,7 @@ inputs:
 
 outputs:
   - name: artifact-dir
+  - name: sonarqube-analysis-input
 
 run:
   path: user-service-git/ci/scripts/build-artifact.sh
