@@ -1,5 +1,7 @@
 package com.app.api.config;
 
+import com.app.api.dto.CrudResponseDto;
+import com.fasterxml.classmate.TypeResolver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,8 +39,12 @@ public class SwaggerConfig {
 
     @Bean
     public Docket swaggerApi() {
-        return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.basePackage(basePackage))
-                .paths(PathSelectors.ant("/**")).build().apiInfo(metaData());
+        TypeResolver typeResolver = new TypeResolver();
+        return new Docket(DocumentationType.SWAGGER_2).additionalModels(typeResolver.resolve(CrudResponseDto.class))
+                .select()
+                .apis(RequestHandlerSelectors.basePackage(basePackage))
+                .paths(PathSelectors.ant("/**"))
+                .build().apiInfo(metaData());
     }
 
     private ApiInfo metaData() {

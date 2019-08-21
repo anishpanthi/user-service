@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @Data
 @NoArgsConstructor
-public class UserDto extends BaseDto {
+public class UserDto implements Serializable{
 
     @ApiModelProperty(notes = "User's ID")
     private Long id;
