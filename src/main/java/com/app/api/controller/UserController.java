@@ -37,13 +37,13 @@ public class UserController {
     private UserService userService;
 
     /**
-     * Implement HATEOS here!!!
+     * Implement HATEOAS here!!!
      *
      * @return
      * @throws ApiException
      */
     @GetMapping(value = "/users/username/{username}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<?> getUserByUsername(@PathVariable("username") String username,
+    public ResponseEntity<? extends Object> getUserByUsername(@PathVariable("username") String username,
                                                @RequestHeader("Authorization") final String authorization) {
         Optional<User> userOptional = userService.findByUsername(username);
         return userOptional.map(user -> {
@@ -55,34 +55,34 @@ public class UserController {
 
     @PageableEndpoint
     @GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<?> getAllUsers(@RequestHeader("Authorization") final String authorization, Pageable pageable) throws ApiException {
+    public ResponseEntity<Object> getAllUsers(@RequestHeader("Authorization") final String authorization, Pageable pageable) throws ApiException {
         return new ResponseEntity<>(userService.findAll(pageable), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Returns User if ID is found.")
     @GetMapping(value = "/users/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<?> getSingleUser(@RequestHeader("Authorization") final String authorization,
+    public ResponseEntity<Object> getSingleUser(@RequestHeader("Authorization") final String authorization,
                                            @ApiParam(value = "User ID", required = true) @PathVariable("id") Long id) throws ApiException {
         return new ResponseEntity<>(userService.findOne(id), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Stores the user.")
     @PostMapping(value = "/users", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<?> addUser(@RequestHeader("Authorization") final String authorization,
+    public ResponseEntity<Object> addUser(@RequestHeader("Authorization") final String authorization,
                                      @ApiParam(value = "User details to add", required = true) @RequestBody UserDto userDto) throws ApiException {
         return new ResponseEntity<>(userService.save(userDto), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Updates the user.")
     @PutMapping(value = "/users", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<?> updateUser(@RequestHeader("Authorization") final String authorization,
+    public ResponseEntity<Object> updateUser(@RequestHeader("Authorization") final String authorization,
                                         @ApiParam(value = "User details to update", required = true) @RequestBody UserDto userDto) throws ApiException {
         return new ResponseEntity<>(userService.update(userDto), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Deletes the user based on provided information.")
     @DeleteMapping(value = "/users", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<?> deleteUser(@RequestHeader("Authorization") final String authorization,
+    public ResponseEntity<Object> deleteUser(@RequestHeader("Authorization") final String authorization,
                                         @ApiParam(value = "User details to delete", required = true) @RequestBody UserDto userDto) throws ApiException {
         return new ResponseEntity<>(userService.delete(userDto), HttpStatus.OK);
     }

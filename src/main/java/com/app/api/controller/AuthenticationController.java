@@ -45,7 +45,7 @@ public class AuthenticationController {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @PostMapping(value = "/auth", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<?> getAuthentication(@RequestBody @Valid LoginRequestDto loginRequestDto, BindingResult result) {
+    public ResponseEntity<? extends Object> getAuthentication(@RequestBody @Valid LoginRequestDto loginRequestDto, BindingResult result) {
 
         if (result.hasErrors()) {
             throw new DataException("Data Validation Error!!!", result);

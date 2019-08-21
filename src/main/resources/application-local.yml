@@ -8,7 +8,7 @@ spring:
   boot:
     admin:
       client:
-        url: http://localhost:9090/app/api/dashboard
+        url: http://localhost:9091/app/api/dashboard
         instance:
           health-url: http://localhost:9091/app/api/actuator/health
           management-base-url: http://localhost:9091/app/api

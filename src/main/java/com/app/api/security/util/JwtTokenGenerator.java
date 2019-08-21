@@ -15,6 +15,8 @@ import java.util.Date;
  */
 public class JwtTokenGenerator {
 
+    private JwtTokenGenerator(){}
+
     public static String generateToken(JwtUserDto u, String secret) {
         final Date expirationDate = new Date(System.currentTimeMillis() + (2 * 24 * 60 * 60 * 1000));
 

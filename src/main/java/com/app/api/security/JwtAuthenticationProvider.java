@@ -56,7 +56,8 @@ public class JwtAuthenticationProvider extends AbstractUserDetailsAuthentication
      */
     @Override
     protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
-
+        // We don't have any additional checks for authentication.
+        // So this block remains empty.
     }
 
     /**

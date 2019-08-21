@@ -40,6 +40,8 @@ public interface BaseService<T, DT, ID> {
             case Constants.DELETE:
                 message = "Record deleted successfully!!!";
                 break;
+            default:
+                message = "Unsupported operation!!!";
 
         }
         crudResponseDto.setMessage(message);
@@ -58,6 +60,8 @@ public interface BaseService<T, DT, ID> {
             case Constants.DELETE:
                 operationErrorMessage = "Unable to delete record!!!";
                 break;
+            default:
+                operationErrorMessage = "Unsupported operation!!!";
         }
         throw new ApiException(operationErrorMessage);
     }

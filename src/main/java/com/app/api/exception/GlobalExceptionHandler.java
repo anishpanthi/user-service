@@ -20,33 +20,33 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<?> handleNotFoundException(NotFoundException exception) {
+    public ResponseEntity<? extends Object> handleNotFoundException(NotFoundException exception) {
         return new ResponseEntity<>(generateErrorResponse(exception), HttpStatus.OK);
     }
 
     @ExceptionHandler(DataAlreadyExistsException.class)
-    public ResponseEntity<?> handleDataAlreadyExistsException(DataAlreadyExistsException exception) {
+    public ResponseEntity<? extends Object> handleDataAlreadyExistsException(DataAlreadyExistsException exception) {
         return new ResponseEntity<>(generateErrorResponse(exception), HttpStatus.OK);
     }
 
     @ExceptionHandler(ApiException.class)
-    public ResponseEntity<?> handleApiException(ApiException exception) {
+    public ResponseEntity<? extends Object> handleApiException(ApiException exception) {
         return new ResponseEntity<>(generateErrorResponse(exception), HttpStatus.OK);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<?> handleAccessDeniedException(AccessDeniedException exception) {
+    public ResponseEntity<? extends Object> handleAccessDeniedException(AccessDeniedException exception) {
         return new ResponseEntity<>(generateErrorResponse(exception), HttpStatus.FORBIDDEN);
     }
 
 
     @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<?> handleAuthenticationExceptionException(AuthenticationException exception) {
+    public ResponseEntity<? extends Object> handleAuthenticationExceptionException(AuthenticationException exception) {
         return new ResponseEntity<>(generateErrorResponse(exception), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handleAllOtherException(Exception exception) {
+    public ResponseEntity<? extends Object> handleAllOtherException(Exception exception) {
         return new ResponseEntity<>(generateErrorResponse(exception), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

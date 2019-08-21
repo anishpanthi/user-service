@@ -19,6 +19,7 @@ public class LoggingAspects {
             + "&& !@annotation(com.app.api.annotation.EnableEscapeForCGLibProxy)"
             + "&& !@target(com.app.api.annotation.EnableEscapeForCGLibProxy)")
     public void logExceptionForAllMethods() {
+        log.debug("Pointcut method to log all exceptions that occurs in any method.");
     }
 
     @AfterThrowing(pointcut = "logExceptionForAllMethods()", throwing = "exception")

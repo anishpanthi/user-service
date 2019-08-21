@@ -11,6 +11,9 @@ import java.util.function.Function;
  */
 public class UserMapper {
 
+    private UserMapper(){
+    }
+
     private static Function<User, UserDto> userToUserDto = user -> {
         UserDto userDto = new UserDto();
         BeanUtils.copyProperties(user, userDto);

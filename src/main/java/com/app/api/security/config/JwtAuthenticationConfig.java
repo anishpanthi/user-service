@@ -28,7 +28,7 @@ import java.util.Arrays;
 @EnableGlobalMethodSecurity(prePostEnabled = true, proxyTargetClass = true)
 public class JwtAuthenticationConfig extends WebSecurityConfigurerAdapter {
 
-    private static final String BASE_URL = "/v1";
+//    private static final String BASE_URL = "/v1";
 
     private JwtAuthenticationEntryPoint unauthorizedHandler;
 
